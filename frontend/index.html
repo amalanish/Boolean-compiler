@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Boolean Expression Compiler</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header class="navbar">
+        <div class="logo">B<span>C</span></div>
+        <h2>Boolean Compiler</h2>
+        <span class="status">Compiler Frontend</span>
+    </header>
+
+    <main class="container">
+
+        <section class="hero">
+            <p class="subtitle">COMPILER DESIGN PROJECT</p>
+
+            <h1>
+                Boolean Expression
+                <span>Compiler</span>
+            </h1>
+
+            <p class="description">
+                Enter a Boolean expression to analyze its tokens,
+                validate its syntax, and view its Abstract Syntax Tree.
+            </p>
+        </section>
+
+        <section class="input-section">
+
+            <h2>Expression Playground</h2>
+
+            <p class="section-description">
+                Enter an expression using relational and logical operators.
+            </p>
+
+            <form id="compile-form">
+
+                <label for="expression">YOUR EXPRESSION</label>
+
+                <input
+                    type="text"
+                    id="expression"
+                    placeholder="e.g. a > 10 && b < 20"
+                    autocomplete="off"
+                    required
+                >
+
+                <p class="operators">
+                    Supported operators:
+                    <code>&gt;</code>
+                    <code>&lt;</code>
+                    <code>==</code>
+                    <code>!=</code>
+                    <code>&amp;&amp;</code>
+                    <code>||</code>
+                    <code>!</code>
+                </p>
+
+                <div class="buttons">
+                    <button type="submit" class="compile-btn">
+                        Compile Expression ↗
+                    </button>
+
+                    <button type="button" id="clear-btn" class="clear-btn">
+                        Clear
+                    </button>
+                </div>
+
+            </form>
+
+            <div class="examples">
+                <p>TRY AN EXAMPLE</p>
+
+                <button type="button" class="example-btn"
+                    data-expression="a > 10 && b < 20">
+                    a &gt; 10 &amp;&amp; b &lt; 20
+                </button>
+
+                <button type="button" class="example-btn"
+                    data-expression="a == b">
+                    a == b
+                </button>
+
+                <button type="button" class="example-btn"
+                    data-expression="!(a != 5)">
+                    !(a != 5)
+                </button>
+            </div>
+
+        </section>
+
+        <div id="message" class="message">
+            Enter an expression and connect the compiler backend
+            to view the analysis results.
+        </div>
+
+        <section class="results">
+
+            <h2>Analysis Results</h2>
+
+            <div class="result-grid">
+
+                <article class="result-card">
+                    <h3>01. Token Analysis</h3>
+                    <p>Lexical analyzer output</p>
+
+                    <div id="tokens-output">
+                        <p class="placeholder">No tokens yet</p>
+                    </div>
+                </article>
+
+                <article class="result-card">
+                    <h3>02. Syntax Status</h3>
+                    <p>Parser validation output</p>
+
+                    <div id="syntax-output">
+                        <p class="placeholder">Waiting for analysis</p>
+                    </div>
+                </article>
+
+                <article class="result-card ast-card">
+                    <h3>03. Abstract Syntax Tree</h3>
+                    <p>Interactive tree & structural representation</p>
+
+                    <div id="ast-visual-tree"></div>
+                    <pre id="ast-output" class="placeholder">No tree generated</pre>
+                </article>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer>
+        <p>Boolean Expression Compiler</p>
+        <p>Compiler Design Project | Integrated Frontend & Backend</p>
+    </footer>
+
+    <script src="ast_render.js"></script>
+    <script src="script.js"></script>
+
+</body>
+</html>
