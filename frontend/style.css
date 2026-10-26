@@ -243,7 +243,7 @@ button {
 
 .result-grid {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 16px;
 }
 
@@ -314,6 +314,53 @@ button {
     color: #a33e48;
     background: #fff4f4;
     border: 1px solid #f2d4d4;
+    font-size: 13px;
+}
+
+.semantic-valid {
+    padding: 15px;
+    border-radius: 8px;
+    color: #1a5f7a;
+    background: #f0f9ff;
+    border: 1px solid #b3dff0;
+    font-size: 13px;
+}
+
+.semantic-valid .sem-badge {
+    display: inline-block;
+    background: #1a5f7a;
+    color: #fff;
+    border-radius: 12px;
+    padding: 2px 9px;
+    font-size: 11px;
+    font-weight: bold;
+    margin: 2px 3px 2px 0;
+}
+
+.semantic-pending {
+    padding: 15px;
+    border-radius: 8px;
+    color: #6b5900;
+    background: #fffbea;
+    border: 1px solid #f0dfa0;
+    font-size: 13px;
+}
+
+.semantic-error {
+    padding: 15px;
+    border-radius: 8px;
+    color: #7a3200;
+    background: #fff7f0;
+    border: 1px solid #f0cba8;
+    font-size: 13px;
+}
+
+.semantic-skipped {
+    padding: 15px;
+    border-radius: 8px;
+    color: #777;
+    background: #f8f8f8;
+    border: 1px solid #e0e0e0;
     font-size: 13px;
 }
 

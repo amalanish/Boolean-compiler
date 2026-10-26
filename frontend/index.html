@@ -62,11 +62,14 @@
                     <code>&amp;&amp;</code>
                     <code>||</code>
                     <code>!</code>
+                    <code>AND</code>
+                    <code>OR</code>
+                    <code>NOT</code>
                 </p>
 
                 <div class="buttons">
                     <button type="submit" class="compile-btn">
-                        Compile Expression ↗
+                        Compile Expression &#8599;
                     </button>
 
                     <button type="button" id="clear-btn" class="clear-btn">
@@ -92,6 +95,16 @@
                 <button type="button" class="example-btn"
                     data-expression="!(a != 5)">
                     !(a != 5)
+                </button>
+
+                <button type="button" class="example-btn"
+                    data-expression="TRUE AND FALSE">
+                    TRUE AND FALSE
+                </button>
+
+                <button type="button" class="example-btn"
+                    data-expression="a OR NOT b AND c">
+                    a OR NOT b AND c
                 </button>
             </div>
 
@@ -126,9 +139,18 @@
                     </div>
                 </article>
 
+                <article class="result-card">
+                    <h3>03. Semantic Analysis</h3>
+                    <p>Variable binding, operator arity &amp; type checks</p>
+
+                    <div id="semantic-output">
+                        <p class="placeholder">Waiting for semantic analysis</p>
+                    </div>
+                </article>
+
                 <article class="result-card ast-card">
-                    <h3>03. Abstract Syntax Tree</h3>
-                    <p>Interactive tree & structural representation</p>
+                    <h3>04. Abstract Syntax Tree</h3>
+                    <p>Interactive tree &amp; structural representation</p>
 
                     <div id="ast-visual-tree"></div>
                     <pre id="ast-output" class="placeholder">No tree generated</pre>
@@ -142,7 +164,7 @@
 
     <footer>
         <p>Boolean Expression Compiler</p>
-        <p>Compiler Design Project | Integrated Frontend & Backend</p>
+        <p>Compiler Design Project | Integrated Frontend &amp; Backend</p>
     </footer>
 
     <script src="ast_render.js"></script>
