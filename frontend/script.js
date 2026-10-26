@@ -6,7 +6,6 @@ const API_URL = window.location.protocol === "file:" ? "http://127.0.0.1:5000/co
 const form = document.getElementById("compile-form");
 const expressionInput = document.getElementById("expression");
 const clearButton = document.getElementById("clear-btn");
-
 const message = document.getElementById("message");
 const tokensOutput = document.getElementById("tokens-output");
 const syntaxOutput = document.getElementById("syntax-output");
@@ -29,24 +28,18 @@ function showMessage(text, type = "") {
 }
 
 function resetResults() {
-    tokensOutput.innerHTML =
-        '<p class="placeholder">No tokens yet</p>';
-
-    syntaxOutput.innerHTML =
-        '<p class="placeholder">Waiting for analysis</p>';
-
+    tokensOutput.innerHTML = '<p class="placeholder">No tokens yet</p>';
+    syntaxOutput.innerHTML = '<p class="placeholder">Waiting for analysis</p>';
     if (visualTreeContainer) {
         visualTreeContainer.innerHTML = "";
     }
-
     astOutput.textContent = "No tree generated";
     astOutput.className = "placeholder";
 }
 
 function displayTokens(tokens) {
     if (!Array.isArray(tokens) || tokens.length === 0) {
-        tokensOutput.innerHTML =
-            '<p class="placeholder">No token data returned</p>';
+        tokensOutput.innerHTML = '<p class="placeholder">No token data returned</p>';
         return;
     }
 
@@ -65,10 +58,7 @@ function displayTokens(tokens) {
     tokens.forEach(token => {
         const lexeme = token.lexeme ?? token.value ?? "";
         const type = token.type ?? token.token_type ?? "TOKEN";
-        const pos = (token.line && token.column) 
-            ? `${token.line}:${token.column}` 
-            : (token.position ?? "-");
-
+        const pos = (token.line && token.column) ? `${token.line}:${token.column}` : (token.position ?? "-");
         html += `
             <tr>
                 <td><code>${escapeHtml(lexeme)}</code></td>
@@ -83,20 +73,17 @@ function displayTokens(tokens) {
 }
 
 function displaySyntax(data) {
-    const valid = Boolean(
-        data.valid ?? data.is_valid ?? data.success
-    );
-
+    const valid = Boolean(data.valid ?? data.is_valid ?? data.success);
     const error = data.error ?? data.message ?? "";
     const sem = data.semantics;
 
     if (valid) {
         let semHtml = "";
         if (sem && sem.variables) {
-            const varList = sem.variables.length > 0
-                ? sem.variables.map(v => `<code>${escapeHtml(v)}</code>`).join(", ")
+            const varList = sem.variables.length > 0 
+                ? sem.variables.map(v => `<code>${escapeHtml(v)}</code>`).join(", ") 
                 : "<em>None (constant expression)</em>";
-
+            
             semHtml = `
                 <div style="margin-top: 10px; font-size: 0.88rem; line-height: 1.4;">
                     <div><strong>Variables Detected:</strong> ${varList}</div>
@@ -152,39 +139,26 @@ function displayAST(data) {
 
 form.addEventListener("submit", async function (event) {
     event.preventDefault();
-
     const expression = expressionInput.value.trim();
 
     if (!expression) {
-        showMessage(
-            "Please enter a Boolean expression before compiling.",
-            "error"
-        );
+        showMessage("Please enter a Boolean expression before compiling.", "error");
         expressionInput.focus();
         return;
     }
 
     resetResults();
-
-    showMessage(
-        "Compiling expression through lexer, parser, and semantic analyzer..."
-    );
+    showMessage("Compiling expression through lexer, parser, and semantic analyzer...");
 
     try {
         const response = await fetch(API_URL, {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                expression: expression
-            })
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ expression: expression })
         });
 
         if (!response.ok) {
-            throw new Error(
-                `Server returned status ${response.status}.`
-            );
+            throw new Error(`Server returned status ${response.status}.`);
         }
 
         const data = await response.json();
@@ -194,23 +168,13 @@ form.addEventListener("submit", async function (event) {
         displayAST(data);
 
         if (data.valid) {
-            showMessage(
-                "Analysis completed successfully. Tokens, AST, and semantics generated.",
-                "success"
-            );
+            showMessage("Analysis completed successfully. Tokens, AST, and semantics generated.", "success");
         } else {
-            showMessage(
-                "Compilation completed with errors. See details below.",
-                "error"
-            );
+            showMessage("Compilation completed with errors. See details below.", "error");
         }
 
     } catch (error) {
-        showMessage(
-            "Could not connect to the compiler backend. " +
-            "Make sure the Flask server is running at http://127.0.0.1:5000. Details: " + error.message,
-            "error"
-        );
+        showMessage("Could not connect to the compiler backend. Make sure the Flask server is running. Details: " + error.message, "error");
     }
 });
 
@@ -226,10 +190,6 @@ document.querySelectorAll(".example-btn").forEach(button => {
 clearButton.addEventListener("click", function () {
     expressionInput.value = "";
     resetResults();
-
-    showMessage(
-        "Enter an expression and connect the compiler backend to view results."
-    );
-
+    showMessage("Enter an expression and connect the compiler backend to view results.");
     expressionInput.focus();
 });
