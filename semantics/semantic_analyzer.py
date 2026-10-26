@@ -5,7 +5,7 @@ Performs semantic analysis and validation on the Boolean Expression AST:
 2. Validates supported operators and operand counts (arity).
 3. Enforces strict semantic type-checking (e.g., logical ops require booleans/relations).
 4. Verifies variable binding / assignment coverage for evaluation.
-5. Detects constant / tautological expressions (optional optimization).
+5. Detects constant / tautological expressions.
 """
 
 from typing import Set, Dict, List, Optional, Any
@@ -69,15 +69,18 @@ class SemanticAnalyzer:
             left_type = self._traverse(node.left)
             right_type = self._traverse(node.right)
 
+            line = getattr(node, 'line', 1)
+            col = getattr(node, 'column', 1)
+
             # Enforce semantic rule: Logical operators cannot directly take raw numbers
             if op in self.LOGICAL_OPS:
                 if left_type == "number" or right_type == "number":
-                    line = getattr(node, 'line', 1)
-                    col = getattr(node, 'column', 1)
                     self.errors.append(f"Semantic Error: Logical operator '{op}' cannot be applied to number types at line {line}, column {col}")
 
-            # Relational operators output booleans, others depend on context
+            # Enforce semantic rule: Relational operators type mismatch checking (e.g., comparing boolean to number/literal)
             if op in {">", "<", "==", "!=", ">=", "<="}:
+                if {left_type, right_type} == {"boolean", "number"}:
+                    self.errors.append(f"Semantic Error: Type mismatch. Cannot apply relational operator '{op}' between boolean and number types at line {line}, column {col}")
                 return "boolean"
             
             return "boolean" if op in self.LOGICAL_OPS else "unknown"
@@ -108,12 +111,13 @@ class SemanticAnalyzer:
 
         elif isinstance(node, LiteralNode):
             val = getattr(node, 'value', None)
-            if isinstance(val, (int, float)) or (isinstance(val, str) and val.isdigit()):
+            if isinstance(val, bool) or str(val).lower() in ("true", "false"):
+                return "boolean"
+            elif isinstance(val, (int, float)) or (isinstance(val, str) and val.isdigit()):
                 return "number"
             return "boolean"
 
         elif isinstance(node, dict):
-            # Dict fallback for legacy / serialized structures
             node_type = node.get("type", "")
             if node_type == "binary":
                 op = node.get("operator", "")
